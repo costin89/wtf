@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Grid Layout Beispiel</title>
+    <style>
+        :root {
+            --chevron-width: 3vw;
+            --chevron-height: 2vw;
+        }
+
+        @media (max-width: 678px) {
+            :root {
+                --chevron-width: 5vw;
+                --chevron-height: 3vw;
+            }
+        }
+
+        body {
+            min-height: 100%;
+            margin: 0 auto;
+            background-color: rgb(44, 63, 87);
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+        }
+        .container {
+            display: grid;
+            grid-template-rows: 80px auto 1fr auto 50px;
+            grid-template-columns: 1fr 4fr 1fr;
+            height: 100vh;
+            grid-template-areas: 
+            "header header header"
+            "left-aside banner right-aside"
+            "left-aside main right-aside"
+            "left-aside low-content right-aside"
+            "footer footer footer";
+            grid-gap: 1px;
+        }
+        @media (max-width: 678px) {
+            .container {
+                grid-template-rows: 50px 50px 50px 1fr 50px 50px 50px;
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                "header"
+                "banner"
+                "left-aside"
+                "main"
+                "right-aside"
+                "low-content"
+                "footer";
+            }
+        }
+        header {
+            grid-area: header;
+            background-color: rgb(44, 63, 87);
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            font-weight: bolder;
+            font-size: 30px;
+            color: white;
+        }
+        header img {
+            max-width: 100px; /* Skalieren des GIFs */
+            height: auto;
+            margin-right: 10px;
+        }
+        @media (max-width: 678px) {
+            header img {
+                max-width: 50px; /* Skalieren des GIFs für kleine Bildschirme */
+            }
+        }
+        .left-aside, .right-aside {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(44, 63, 87);
+            padding: 20px;
+        }
+        .left-aside {
+            grid-area: left-aside;
+        }
+        .right-aside {
+            grid-area: right-aside;
+        }
+        .banner {
+            grid-area: banner;
+            background-color: rgb(44, 63, 87);
+            text-align: left-aside;
+            padding: 20px;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            font-style: italic;
+            color: rgb(67, 156, 182);
+        }
+        main {
+            grid-area: main;
+            background-color: rgb(44, 63, 87);
+            padding: 20px;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            color: white;
+        }
+        .low-content {
+            grid-area: low-content;
+            background-color: rgb(44, 63, 87);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        footer {
+            grid-area: footer;
+            background-color: rgb(44, 63, 87);
+            text-align: center;
+            padding: 20px;
+            font-size: 8px;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            color: white;
+        }
+
+        .chevron-left,
+        .chevron-right {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-top: var(--chevron-height) solid transparent;
+            border-bottom: var(--chevron-height) solid transparent;
+            border-right: var(--chevron-width) solid white;
+            cursor: pointer;
+        }
+        .chevron-right {
+            transform: rotate(180deg);
+        }
+        
+        .skip-icon {
+            position: relative;
+            width: 20px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        .skip-icon .arrow {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #fff;
+            transform: translateY(-50%);
+        }
+        
+        .skip-icon .line {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 2px;
+            height: 20px;
+            background-color: #fff;
+            transform: translateY(-50%);
+        }
+
+        .hamburger-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        
+        .hamburger-icon div {
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+
+        .active-chevron {
+            border-right-color: yellow !important;
+        }
+
+        .active-skip .arrow {
+            border-left-color: yellow !important;
+        }
+
+        .active-skip .line {
+            background-color: yellow !important;
+        }
+
+        .active-hamburger div {
+            background-color: yellow !important;
+        }
+
+        /* Styles from the second code block */
+        .container-flex {
+            display: flex;
+            flex-wrap: wrap; /* Wrap items to the next line if they exceed the width */
+        }
+        .box {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #div1 {
+            background-color: rgb(44, 63, 87);
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+        #div1 .sub-box {
+            padding: 10px;
+            margin: 5px 0;
+        }
+        #header {
+            background-color: rgb(44, 63, 87);
+        }
+        #main-content, #warning {
+            background-color: rgb(44, 63, 87);
+            height: 200px; /* Setze die gewünschte Höhe hier */
+        }
+        @media (max-width: 678px) {
+            #main-content {
+                height: 150px; /* Setze die Höhe auf 80% bei kleineren Bildschirmen */
+                
+            }
+            #div2 img {
+                max-width: 50%; /* Skaliere das Bild auf 50% der ursprünglichen Größe */
+            }
+        }
+        #warning {
+            background-color: rgb(44, 63, 87);
+        }
+        #div2 {
+            background-color: rgb(44, 63, 87);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #div2 img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="h.gif" alt="Hephaistos GIF"> HEPHAISTOS
+        </header>
+        <aside class="left-aside">
+            <div class="chevron-left"></div>
+        </aside>
+        <aside class="right-aside">
+            <div class="chevron-right"></div>
+        </aside>
+        <div class="banner">Step 1/100</div>
+        <main>
+            <div class="container-flex">
+                <div id="div1" class="box">
+                    <div id="header" class="sub-box">header</div>
+                    <div id="main-content" class="sub-box">main content</div>
+                    <div id="warning" class="sub-box">warning</div>
+                </div>
+                <div id="div2" class="box">
+                    <img src="https://via.placeholder.com/512" alt="Beispielbild">
+                </div>
+            </div>
+        </main>
+        <div class="low-content">
+            <div class="hamburger-icon">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="skip-icon">
+                <div class="arrow"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+        <footer>Created by Marcella Haller & Alexander Ast - 2024 Technische Universität Darmstadt -</footer>
+    </div>
+
+    <script>
+        // Function to handle the click event
+        function handleClick(event) {
+            const target = event.currentTarget;
+            let activeClass;
+
+            if (target.classList.contains('chevron-left') || target.classList.contains('chevron-right')) {
+                activeClass = 'active-chevron';
+            } else if (target.classList.contains('skip-icon')) {
+                activeClass = 'active-skip';
+            } else if (target.classList.contains('hamburger-icon')) {
+                activeClass = 'active-hamburger';
+            }
+
+            target.classList.add(activeClass);
+            setTimeout(() => {
+                target.classList.remove(activeClass);
+            }, 200); // Remove the class after 200ms
+        }
+
+        // Add event listeners to the icons
+        document.querySelector('.chevron-left').addEventListener('click', handleClick);
+        document.querySelector('.chevron-right').addEventListener('click', handleClick);
+        document.querySelector('.skip-icon').addEventListener('click', handleClick);
+        document.querySelector('.hamburger-icon').addEventListener('click', handleClick);
+    </script>
+</body>
+</html>
